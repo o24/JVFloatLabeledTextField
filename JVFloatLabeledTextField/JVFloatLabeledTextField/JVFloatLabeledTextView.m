@@ -132,6 +132,7 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
                                           _floatingLabel.frame.origin.y,
                                           self.frame.size.width,
                                           _floatingLabel.frame.size.height);
+        [self addOffset:_floatingLabel];
     }
     
     [self setNeedsLayout];
@@ -157,6 +158,7 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
                                       _floatingLabel.frame.origin.y,
                                       floatingLabelSize.width,
                                       floatingLabelSize.height);
+    [self addOffset:_floatingLabel];
     
     CGSize placeholderLabelSize = [_placeholderLabel sizeThatFits:_placeholderLabel.superview.bounds.size];
     
@@ -165,6 +167,7 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
     _placeholderLabel.alpha = [self.text length] > 0 ? 0.0f : 1.0f;
     _placeholderLabel.frame = CGRectMake(textRect.origin.x, textRect.origin.y,
                                          placeholderLabelSize.width, placeholderLabelSize.height);
+    [self addOffset:_placeholderLabel];
     
     [self setLabelOriginForTextAlignment];
     
@@ -221,6 +224,12 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
     }
 }
 
+- (void)addOffset:(UIView*)view
+{
+    CGRect frame = view.frame;
+    frame.origin.x += 8;
+    view.frame = frame;
+}
 - (void)hideFloatingLabel:(BOOL)animated
 {
     void (^hideBlock)() = ^{
@@ -230,6 +239,7 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
                                           _floatingLabel.frame.size.width,
                                           _floatingLabel.frame.size.height);
         
+        //[self addOffset:_floatingLabel];
     };
     
     if (animated || 0 != _animateEvenIfNotFirstResponder) {
@@ -281,6 +291,8 @@ static CGFloat const kFloatingLabelHideAnimationDuration = 0.3f;
     
     _placeholderLabel.frame = CGRectMake(placeholderLabelOriginX, _placeholderLabel.frame.origin.y,
                                          _placeholderLabel.frame.size.width, _placeholderLabel.frame.size.height);
+    [self addOffset:_floatingLabel];
+    [self addOffset:_placeholderLabel];
 }
 
 - (CGRect)textRect
